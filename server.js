@@ -9,10 +9,10 @@ const configurePassport = require('./config/passport');
 // *** Make sure that your Mongoose configuration file is loaded before any other configuration is performed in the server.js file.
 const db = configureMongoose();
 const app = configureExpress();
-const passport = configurePassport();
+// const passport = configurePassport();
 
-app.listen(3000);
+app.listen(8081);
 
 module.exports = app;
 
-console.log('Server running at http://localhost:3000/');
+console.log('Server running at http://localhost:8081/');

@@ -1,5 +1,5 @@
 module.exports = {
     // Development configuration options
-    db: 'mongodb://xxx.xxx.xxx.xxx/mean-book',
+    db: 'mongodb://xxx.xxx.xxx.xxx/blog',
     sessionSecret: 'productionSessionSecret'
 }
