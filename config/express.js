@@ -45,7 +45,7 @@ module.exports = function () {
 
     // Routers
     // require('')(app);
-    app.get('/', function (res, res) {
+    app.get('/', function (req, res, next) {
         res.send('hello');
         console.log('here!!!');
         next();
