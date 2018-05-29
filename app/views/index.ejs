@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title><%= title %></title>
 </head>
 <body>
+<% if (userFullName) { %>
+<h2>Hello <%= userFullName %></h2>
+<a href="/signout">Sign out</a>
+<% } else { %>
+<a href="/signup">Signup</a>
+<a href="/signin">Signin</a>
+<% } %>
 
-Hello!!! ejs
+<img src="img/logo.png" alt="Logo"/>
 
 </body>
 </html>

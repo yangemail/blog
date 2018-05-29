@@ -5,10 +5,10 @@ const morgan = require('morgan');
 const compress = require('compression');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
-// const passport = require('passport');
+const passport = require('passport');
 const consolidate = require('consolidate');
 
 
@@ -31,7 +31,7 @@ module.exports = function () {
     app.use(session({
         saveUninitialized: true,
         resave: true,
-        // cookie: {maxAge: 30 * 60 * 1000},
+        cookie: {maxAge: 30 * 60 * 1000},
         secret: config.sessionSecret
     }));
 
@@ -47,6 +47,7 @@ module.exports = function () {
 
     // Routers
     require('../app/routes/index.server.routes')(app);
+    require('../app/routes/users.server.routes')(app);
 
     app.use(express.static('./public'));
 
