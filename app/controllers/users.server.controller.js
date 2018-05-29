@@ -1,5 +1,6 @@
 const User = require('mongoose').model('User');
 const passport = require('passport');
+var Cookies = require('cookie-parser');
 
 function getErrorMessage(err) {
     var message = '';
@@ -23,152 +24,25 @@ function getErrorMessage(err) {
     return message;
 }
 
-// Render
-exports.renderSignin = function (req, res, next) {
-    if (!req.user) {
-        res.render('signin', {
-            title: 'Sign-in Form',
-            message: req.flash('error') || req.flash('info')
-        });
-    } else {
-        return res.redirect('/');
-    }
-};
+// validate user is admin?
+exports.validateAdmin = function (req, res, next) {
+    req.cookies = new Cookies(req, res);
 
-// Render
-exports.renderSignup = function (req, res, next) {
-    if (!req.user) {
-        res.render('signup', {
-            title: 'Sign-up Form',
-            message: req.flash('error')
-        });
-    } else {
-        return res.redirect('/');
-    }
-};
+    // 解析登陆用户的cookie信息
+    req.userInfo = {};
+    if (req.cookies.get('userInfo')) {
+        try {
+            req.userInfo = JSON.parse(req.cookies.get('userInfo'));
 
-exports.signup = function (req, res, next) {
-    if (!req.user) {
-        const user = new User(req.body);
-        user.provider = 'local';
-
-        user.save(function (err) {
-            if (err) {
-                const messsage = getErrorMessage(err);
-
-                req.flash('error', messsage);
-                return res.redirect('/signup');
-            }
-            req.login(user, function (err) {
-                if (err) {
-                    return next(err);
-                }
-                return res.redirect('/');
+            // 获取当前登陆用户的类型，是否是管理员
+            User.findById(req.userInfo._id).then(function (userInfo) {
+                req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
+                next();
             });
-        });
-    } else {
-        return res.redirect('/');
-    }
-};
-
-exports.signout = function (req, res) {
-    // req.logout();
-    // res.redirect('/');
-};
-
-exports.create = function (req, res, next) {
-    console.log(req);
-
-    const user = new User(req.body);
-
-    user.save(function (err) {
-        if (err) {
-            return next(err);
-        } else {
-            res.status(200).json(user);
-        }
-    });
-};
-
-exports.list = function (req, res, next) {
-    User.find({}, function (err, users) {
-        if (err) {
-            return next(err);
-        } else {
-            res.status(200).json(users);
-        }
-    });
-};
-
-exports.listUsernameEmail = function (req, res, next) {
-    User.find({}, "username email", function (err, users) {
-        if (err) {
-            next(err);
-        } else {
-            res.status(200).json(users);
-        }
-    });
-};
-
-exports.listUsernameEmailLimited = function (req, res, next) {
-    User.find({}, "username email", {
-        skip: 10,
-        limit: 10
-    }, function (err, users) {
-        if (err) {
-            next(err);
-        } else {
-            res.status(200).json(users);
-        }
-    });
-};
-
-exports.read = function (req, res) {
-    res.json(req.user);
-};
-
-exports.userByID = function (req, res, next) {
-    User.findOne({
-        _id: id
-    }, function (err, user) {
-        if (err) {
-            return next(err);
-        } else {
-            req.user = user;
+        } catch (e) {
             next();
         }
-    });
-};
-
-exports.update = function (req, res, next) {
-    User.findByIdAndUpdate(req.user.id, req.body, {
-        // set the "new" option to "true", making sure that to receive the updated document.
-        'new': true
-    }, function (err, user) {
-        if (err) {
-            return next(err);
-        } else {
-            res.status(200).json(user);
-        }
-    });
-};
-
-exports.delete = function (req, res, next) {
-    req.user.remove(function (err) {
-        if (err) {
-            return next(err);
-        } else {
-            res.status(200).json(req.user);
-        }
-    });
-};
-
-exports.findByUsername = function (req, res, next) {
-    User.findOneByUsername('username', function (err, user) {
-        if (err) {
-            return next(err);
-        } else {
-            ;
-        }
-    });
-};
+    } else {
+        next();
+    }
+}
