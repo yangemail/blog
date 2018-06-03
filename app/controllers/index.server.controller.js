@@ -1,4 +1,8 @@
-exports.render = function (req, res) {
+const path = require('path');
+const async = require('async');
+
+
+exports.render = function (req, res, next) {
 
     // if (req.session.lastVisit) {
     //     console.log(req.session.lastVisit);
@@ -8,6 +12,6 @@ exports.render = function (req, res) {
 
     res.render('index', {
         title: 'Hello World',
-        userFullName: req.user ? req.user.fullName : ''
+        userFullName: "Yang Zhang"
     });
 };

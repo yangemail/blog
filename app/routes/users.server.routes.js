@@ -1,5 +1,5 @@
-const users = require('../controllers/demo.users.server.controller');
-const passport = require('passport');
+const users = require('../controllers/users.server.controller');
+// const passport = require('passport');
 
 module.exports = function (app) {
 
