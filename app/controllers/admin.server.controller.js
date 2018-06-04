@@ -18,7 +18,9 @@ exports.index = function (req, res, next) {
     tool.getConfig(path.join(path.resolve('.'), 'config/json/settings.json'), function (err, settings) {
         if (err) {
             next(err);
+            console.log(err);
         } else {
+            console.log('hello!');
             res.render('admin/index', {
                 config: settings,
                 title: settings['SiteName'] + ' - ' + res.__("layoutAdmin.web_statistic")

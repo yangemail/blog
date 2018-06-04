@@ -27,6 +27,7 @@ const methodOverride = require('method-override');
 // const consolidate = require('consolidate');
 // 加载 swig-templates 模块
 const swig = require('swig-templates');
+// const swig = require('swig');
 
 
 module.exports = function () {
