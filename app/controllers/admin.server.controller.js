@@ -15,7 +15,7 @@ upload.configure({
 
 // 网站统计页面
 exports.index = function (req, res, next) {
-    tool.getConfig(path.join('./config/json/settings.json'), function (err, settings) {
+    tool.getConfig('./config/json/settings.json', function (err, settings) {
         if (err) {
             next(err);
         } else {
@@ -29,7 +29,7 @@ exports.index = function (req, res, next) {
 
 // 新的文章页面
 exports.newArticle = function (req, res, next) {
-    tool.getConfig(path.join('./config/json/settings.json'), function (err, settings) {
+    tool.getConfig('./config/json/settings.json', function (err, settings) {
         if (err) {
             next(err);
         } else {
@@ -40,4 +40,21 @@ exports.newArticle = function (req, res, next) {
             });
         }
     });
+};
+
+// 保存文章
+exports.saveArticle = function (req, res, next) {
+    var params = {
+        UniqueId: req.body.UniqueId,
+        Title: req.body.Title,
+        Alias: req.body.Alias,
+        Summary: req.body.Summary,
+        Source: req.body.Source,
+        Content: req.body.Content,
+        CategoryId: req.body.CategoryId,
+        Labels: req.body.Labels,
+        Url: req.body.Url,
+        IsDraft: req.body.IsDraft
+    };
+    console.log(params);
 };
