@@ -15,15 +15,28 @@ upload.configure({
 
 // 网站统计页面
 exports.index = function (req, res, next) {
-    tool.getConfig(path.join(path.resolve('.'), 'config/json/settings.json'), function (err, settings) {
+    tool.getConfig(path.join('./config/json/settings.json'), function (err, settings) {
         if (err) {
             next(err);
-            console.log(err);
         } else {
-            console.log('hello!');
             res.render('admin/index', {
                 config: settings,
                 title: settings['SiteName'] + ' - ' + res.__("layoutAdmin.web_statistic")
+            });
+        }
+    });
+};
+
+// 新的文章页面
+exports.newArticle = function (req, res, next) {
+    tool.getConfig(path.join('./config/json/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/newarticle', {
+                uniqueId: shortid.generate(),
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__("layoutAdmin.new_article")
             });
         }
     });

@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <!--Stylesheet-->
     <link href="/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/libs/animate.css/animate.min.css" rel="stylesheet">
+    <link href="/libs/fuelux/dist/css/fuelux.min.css" rel="stylesheet"/>
     <link href="/stylesheets/admin.css" rel="stylesheet"/>
-
+    <!--Java Scripts-->
     <script type="text/javascript" src="/libs/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/libs/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/libs/metisMenu/dist/metisMenu.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/javascripts/admin.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/libs/fuelux/dist/js/fuelux.min.js" charset="utf-8"></script>
+    {% block header %}
+        <title></title>
+    {% endblock %}
 </head>
 <body class="fuelux">
 <div id="wrapper">
@@ -136,5 +140,6 @@
     </div>
 </div>
 
+{% block scripts %} {% endblock %}
 </body>
 </html>

@@ -1,5 +1,9 @@
 {% extends './../shared/layoutAdmin.html' %}
 
+{% block header %}
+<title>{{ title }}</title>
+{% endblock %}
+
 {% block main %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
@@ -18,4 +22,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="/javascripts/admin.js" charset="utf-8"></script>
 {% endblock %}
