@@ -5,7 +5,8 @@ const upload = require('jquery-file-upload-middleware');
 const moment = require('moment');
 const shortid = require('shortid');
 
-const tool = require('../../utility/tool');
+const post = require('../proxy/post.server.proxy');
+const tool = require('../utility/tool');
 
 // 上传配置文件
 upload.configure({
@@ -15,7 +16,7 @@ upload.configure({
 
 // 网站统计页面
 exports.index = function (req, res, next) {
-    tool.getConfig('./config/json/settings.json', function (err, settings) {
+    tool.getConfig('./config/props/settings.json', function (err, settings) {
         if (err) {
             next(err);
         } else {
@@ -29,7 +30,7 @@ exports.index = function (req, res, next) {
 
 // 新的文章页面
 exports.newArticle = function (req, res, next) {
-    tool.getConfig('./config/json/settings.json', function (err, settings) {
+    tool.getConfig('./config/props/settings.json', function (err, settings) {
         if (err) {
             next(err);
         } else {
@@ -57,4 +58,17 @@ exports.saveArticle = function (req, res, next) {
         IsDraft: req.body.IsDraft
     };
     console.log(params);
+};
+
+// 检查文章 Alias 是否唯一
+exports.checkArticleAlias = function (req, res, next) {
+    post.checkAlias(req.body.Alias, req.body.uid, function (err, isValid) {
+        if (err) {
+            next(err);
+        } else {
+            res.json({
+                valid: isValid
+            });
+        }
+    });
 };

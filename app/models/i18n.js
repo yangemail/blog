@@ -12,7 +12,7 @@ i18n.configure({
 
     // you may alter a site wide default locale
     // defaultLocale: 'en-US',
-    defaultLocale: 'zh-CN',
+    defaultLocale: 'en-US',
 
     // enable object notation in order to use nested translation
     objectNotation: true,
@@ -21,7 +21,7 @@ i18n.configure({
     syncFiles: false,
 
     // where to store json files - defaults to './locales
-    directory: __dirname + '/../../language'
+    directory: './locales'
 });
 
 module.exports = i18n;

@@ -1,13 +1,23 @@
+// const dbPath = require('./config').DbPath;
+const i18n = require('../app/models/i18n');
+
 const config = require('./config');
 
 // 加载数据库模块
 const mongoose = require('mongoose');
 
 module.exports = function () {
-    const db = mongoose.connect(config.db);
+    // use custom mongodb url or localhost
+    mongoose.connect(config.db);
+    const db = mongoose.connection;
 
-    // Model
-    // require('../app/models/demo.user.server.model');
+    db.on('error', function (err) {
+        console.error(i18n.__('error.db_1') + err);
+        process.exit(1);
+    });
+
+    // Models
+    require('../app/models/post.server.model');
 
     console.log('Mongodb running at ' + config.db);
 
