@@ -1,5 +1,5 @@
 // const dbPath = require('./config').DbPath;
-const i18n = require('../app/models/i18n');
+const i18n = require('./i18n');
 
 const config = require('./config');
 

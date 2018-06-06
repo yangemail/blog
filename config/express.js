@@ -19,7 +19,7 @@ const compress = require('compression');
 // ...
 
 // const logger = require('./utility/logger');
-const i18n = require('.././app/models/i18n');
+const i18n = require('./i18n');
 const passport = require('passport');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
