@@ -94,6 +94,7 @@ module.exports = function () {
     // app.use('/admin', require('connect-ensure-login').ensureLoggedIn('/login'), admin);
     // app.use('/ue/controller', ue);
     require('../app/routes/admin.server.routes')(app);
+    require('../app/routes/ue.server.routes')(app);
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {

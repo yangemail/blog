@@ -4,9 +4,9 @@ const async = require('async');
 const upload = require('jquery-file-upload-middleware');
 const moment = require('moment');
 const shortid = require('shortid');
-
+const category = require('../proxy/category.server.proxy');
 const post = require('../proxy/post.server.proxy');
-const tool = require('../utility/tool');
+const tool = require('../utility/tool.server.utility');
 
 // 上传配置文件
 upload.configure({
@@ -69,6 +69,17 @@ exports.checkArticleAlias = function (req, res, next) {
             res.json({
                 valid: isValid
             });
+        }
+    });
+};
+
+// 获取分类数据，不含所有和未分类，不走缓存
+exports.getCategories = function (req, res, next) {
+    category.getAll(false, false, function (err, data) {
+        if (err) {
+            next(err);
+        } else {
+            res.json(data);
         }
     });
 };

@@ -18,6 +18,7 @@ module.exports = function () {
 
     // Models
     require('../app/models/post.server.model');
+    require('../app/models/category.server.model');
 
     console.log('Mongodb running at ' + config.db);
 

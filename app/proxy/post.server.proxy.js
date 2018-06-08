@@ -1,8 +1,8 @@
 "use strict"
 
 const postModel = require('../models/post.server.model').PostModel;
-const redisClient = require('../utility/redisClient');
-const tool = require('../utility/tool');
+const redisClient = require('../utility/redisClient.server.utility');
+const tool = require('../utility/tool.server.utility');
 
 
 exports.checkAlias = function (alias, articleId, callback) {
