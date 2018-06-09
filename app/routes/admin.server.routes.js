@@ -14,6 +14,9 @@ module.exports = function (app) {
     //
     // app.post('/admin/getCategories', admin.getCategories);
 
+    // 需要增加 Passport 验证
+    app.use('/admin', router);
+
     router.get('/', admin.index);
 
     router.get('/newArticle', admin.newArticle);
@@ -24,6 +27,4 @@ module.exports = function (app) {
 
     router.post('/getCategories', admin.getCategories);
 
-    // 需要增加 Passport 验证
-    app.use('/admin', router);
-}
+};
