@@ -4,27 +4,120 @@ const router = express.Router();
 module.exports = function (app) {
     const admin = require('../controllers/admin.server.controller');
 
-    // app.get('/admin/', admin.index);
-    //
-    // app.get('/admin/newArticle', admin.newArticle);
-    //
-    // app.post('/admin/saveArticle', admin.saveArticle);
-    //
-    // app.post('/admin/checkArticleAlias', admin.checkArticleAlias);
-    //
-    // app.post('/admin/getCategories', admin.getCategories);
-
     // 需要增加 Passport 验证
     app.use('/admin', router);
 
+    // 网站统计页面 -- INDEX page
     router.get('/', admin.index);
 
+    // TODO: 分类管理页面
+    router.get('/categorymanage', function () {
+        
+    });
+
+    // 获取分类数据，不含所有和未分类，不走缓存
+    router.post('/getCategories', admin.getCategories);
+
+    // TODO: 获取分类数据，包含所有和未分类，不走缓存
+    router.post('/getCateFilter', function () {
+        
+    });
+
+    // TODO: 保存分类数据
+    router.post('/saveCategories', function () {
+        
+    });
+
+
+    // TODO: 文章管理页面
+    router.get('/articlemanage', function () {
+        
+    });
+
+    // TODO: 获取文章列表
+    router.post('/getArticles', function () {
+        
+    });
+
+    // 新的文章页面
     router.get('/newArticle', admin.newArticle);
 
-    router.post('/saveArticle', admin.saveArticle);
-
+    // 检查文章 Alias 是否唯一
     router.post('/checkArticleAlias', admin.checkArticleAlias);
 
-    router.post('/getCategories', admin.getCategories);
+    // 保存文章
+    router.post('/saveArticle', admin.saveArticle);
+    
+    // TODO: 修改文章
+    router.get('/editArticle/:id', function () {
+        
+    });
+
+    // TODO: 删除文章
+    router.post('/deleteArticles', function () {
+        
+    });
+
+    // TODO: 还原文章
+    router.post('/undoArticle', function () {
+        
+    });
+
+
+    // TODO: 评论管理页面
+    router.get('/comments', function () {
+        
+    });
+
+    // TODO: 留言管理页面
+    router.get('/guestbook', function () {
+        
+    });
+
+    // TODO: 关于管理页面
+    router.get('/aboutmanage', function () {
+        
+    });
+
+    // TODO: 缓存管理页面
+    router.get('/cachemanage', function () {
+
+    });
+
+    // TODO: 异常管理页面
+    router.get('/exception', function () {
+
+    });
+
+    // TODO: 获取异常数据
+    router.post('/getExceptions', function () {
+
+    });
+
+    // TODO: 系统设置页面
+    router.get('/settings', function () {
+
+    });
+
+    // TODO: 保存系统设置
+    router.post('/saveSettings', function () {
+
+    });
+
+    // TODO: 保存关于数据
+    router.post('/saveAbout', function () {
+        
+    });
+
+    // TODO: 上传图片
+    router.post('/uploadimg', function () {
+        
+    });
+
+    // TODO: 根据缓存key获取缓存
+    router.post('/getcache', function () {
+        
+    });
+
 
 };

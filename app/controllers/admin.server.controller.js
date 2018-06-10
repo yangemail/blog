@@ -2,11 +2,13 @@ const path = require('path');
 const fs = require('fs');
 const async = require('async');
 const upload = require('jquery-file-upload-middleware');
+const post = require('../proxy/post.server.proxy');
+const category = require('../proxy/category.server.proxy');
+const log = require('../proxy/log.server.proxy');
+const tool = require('../utility/tool.server.utility');
 const moment = require('moment');
 const shortid = require('shortid');
-const category = require('../proxy/category.server.proxy');
-const post = require('../proxy/post.server.proxy');
-const tool = require('../utility/tool.server.utility');
+const redisClient = require('../utility/redisClient.server.utility');
 
 // 上传配置文件
 upload.configure({
@@ -27,6 +29,8 @@ exports.index = function (req, res, next) {
         }
     });
 };
+
+
 
 // 新的文章页面
 exports.newArticle = function (req, res, next) {

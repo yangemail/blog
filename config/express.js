@@ -18,7 +18,7 @@ const compress = require('compression');
 // Routes
 // ...
 
-// const logger = require('./utility/logger');
+const logger = require('./../app/utility/logger.server.utility');
 const i18n = require('./i18n');
 const passport = require('passport');
 const flash = require('connect-flash');
@@ -84,16 +84,20 @@ module.exports = function () {
 
 
     // **** Routes ****
+    /* Index */
     require('../app/routes/index.server.routes')(app);
-    // require('../app/routes/index.server.routes')(app);
-    // app.use('/', route);
-    // app.use('/', locale);
+    /* Locale */
+    require('../app/routes/locale.server.routes')(app);
+    /* Misc */
     // app.use('/', misc);
+    /* Auth */
     // app.use('/', auth);
+    /* Blog */
     // app.use('/blog', blog);
+    /* Admin */
     // app.use('/admin', require('connect-ensure-login').ensureLoggedIn('/login'), admin);
-    // app.use('/ue/controller', ue);
     require('../app/routes/admin.server.routes')(app);
+    /* Ue */
     require('../app/routes/ue.server.routes')(app);
 
     // catch 404 and forward to error handler
@@ -105,10 +109,10 @@ module.exports = function () {
 
     // error handlers
     app.use(function (err, req, res, next) {
-        var code = err.status || 500,
-            message = code === 404 ? res.__('error.404_1') : res.__('error.404_2');
+        var code = err.status || 500;
+        var message = code === 404 ? res.__('error.404_1') : res.__('error.404_2');
         res.status(code);
-        // logger.errLogger(req, err);
+        logger.errLogger(req, err);
         res.render('./shared/error', {
             code: code,
             message: message
