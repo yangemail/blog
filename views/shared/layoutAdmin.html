@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -16,7 +16,7 @@
     <script type="text/javascript" src="/libs/metisMenu/dist/metisMenu.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/libs/fuelux/dist/js/fuelux.min.js" charset="utf-8"></script>
     {% block header %}
-        <title></title>
+        <!--<title></title>-->
     {% endblock %}
 </head>
 <body class="fuelux">
@@ -44,6 +44,7 @@
                 <li>
                     <a href="/admin">
                         <i class="fa fa-bar-chart-o"></i>
+                        <!--网站统计-->
                         <span class="nav-label">{{ __("layoutAdmin.web_statistic") }}</span>
                     </a>
                 </li>
@@ -55,12 +56,15 @@
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level collapse">
+                        <!--New Post-->
                         <li>
                             <a href="/admin/newarticle">{{ __("layoutAdmin.new_article") }}</a>
                         </li>
+                        <!--Category-->
                         <li>
                             <a href="/admin/categorymanage">{{ __("layoutAdmin.classified_management") }}</a>
                         </li>
+                        <!--Posts-->
                         <li>
                             <a href="/admin/articlemanage">{{ __("layoutAdmin.article_management") }}</a>
                         </li>

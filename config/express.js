@@ -1,3 +1,5 @@
+'use strict';
+
 const config = require('./config');
 
 // 加载 express 模块
@@ -15,9 +17,6 @@ const bodyParser = require('body-parser');
 // 加载网页压缩模块
 const compress = require('compression');
 
-// Routes
-// ...
-
 const logger = require('./../app/utility/logger.server.utility');
 const i18n = require('./i18n');
 const passport = require('passport');
@@ -27,8 +26,6 @@ const methodOverride = require('method-override');
 // const consolidate = require('consolidate');
 // 加载 swig-templates 模块
 const swig = require('swig-templates');
-// const swig = require('swig');
-
 
 module.exports = function () {
     // 创建app应用 => NodeJS Http.createServer();
@@ -73,6 +70,7 @@ module.exports = function () {
         saveUninitialized: true
     }));
 
+
     // 设置静态文件托管
     // 当用户访问的 url 以 /public 开始，那么直接返回对应的 __dirname + '/public' 下的文件
     app.use(express.static(path.join('./public')));
@@ -99,6 +97,7 @@ module.exports = function () {
     require('../app/routes/admin.server.routes')(app);
     /* Ue */
     require('../app/routes/ue.server.routes')(app);
+
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {

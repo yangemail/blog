@@ -1,7 +1,7 @@
 'use strict';
 
 const categoryModel = require('../models/category.server.model').CategroyModel;
-const post = require('../models/post.server.model').PostModel;
+const postModel = require('../models/post.server.model').PostModel;
 const shortid = require('shortid');
 const tool = require('../utility/tool.server.utility');
 const redisClient = require('../utility/redisClient.server.utility');
@@ -30,12 +30,12 @@ var cateOther = {
  * @param callback：回调函数
  */
 exports.getAll = function (isAll, cached, callback) {
-    if (typeof cached === 'function') {
-        callback = cached;
-        cached = true;
-    } else if (typeof isAll === 'function') {
+    if (typeof isAll === 'function') {
         callback = isAll;
         isAll = true;
+        cached = true;
+    } else if (typeof cached === 'function') {
+        callback = cached;
         cached = true;
     }
 
@@ -53,7 +53,7 @@ exports.getAll = function (isAll, cached, callback) {
                 return callback(null, categories);
             }
             // 缓存中没有数据，则从数据库中读取
-            categoryModel.find({}, function (err, categories) {
+            categoryModel.find(function (err, categories) {
                 // 读取数据库出错
                 if (err) {
                     return callback(err);
@@ -75,7 +75,7 @@ exports.getAll = function (isAll, cached, callback) {
             });
         });
     } else {
-        categoryModel.find({}, function (err, categories) {
+        categoryModel.find(function (err, categories) {
             if (err) {
                 return callback(err);
             }
@@ -86,4 +86,90 @@ exports.getAll = function (isAll, cached, callback) {
             return callback(null, categories);
         });
     }
+};
+
+/**
+ * 保存分类数据
+ * @param array：分类合集
+ * @param callback：回调函数
+ */
+exports.save = function (array, callback) {
+    var jsonArray = [];
+    var toUpdate = [];
+    var updateQuery = [];
+    var cateNew;
+
+    if (array.length > 0) {
+        array.forEach(function (item) {
+            jsonArray.push({
+                _id: item.uniqueid || shortid.generate(),
+                CateName: item.catename,
+                Alias: item.alias,
+                Img: item.img,
+                Link: item.link,
+                CreatedTime: new Date(),
+                LastModifiedTime:new Date()
+            });
+        });
+    }
+
+    categoryModel.find(function (err, categories) {
+        if (err) {
+            return callback(err);
+        }
+
+        categories.forEach(function (old) {
+            cateNew = tool.jsonQuery(jsonArray, {"_id": old._id});
+            if (!cateNew) {
+                // 该分类将被删除
+                toUpdate.push(old._id);
+            } else {
+                // 该分类依然存在，则创建时间延用原创建时间
+                cateNew.CreatedTime = old.CreatedTime;
+                // 若该分类未作任何修改，则修改时间沿用原修改时间
+                if (cateNew.CateName.toString() === old.CateName.toString()
+                    && cateNew.Alias.toString() === old.Alias.toString()
+                    && cateNew.Img === old.Img
+                    && cateNew.Link === old.Link) {
+                    cateNew.LastModifiedTime = old.LastModifiedTime;
+                }
+            }
+        });
+
+        // 将已经被删除分类的文章设为"未分类"
+        if (toUpdate.length > 0) {
+            toUpdate.forEach(function (cateId) {
+                updateQuery.push({
+                    "CategoryId": cateId
+                });
+            });
+            postModel.update({"$or": updateQuery}, {"CategoryId": "other"}, {multi: true}, function (err) {
+                if (err) {
+                    return callback(err);
+                }
+            });
+        }
+
+        // 将分类全部删除
+        categoryModel.remove(function (err) {
+            if (err) {
+                return callback(err);
+            }
+
+            if (jsonArray.length > 0) {
+                // 插入全部分类
+                // categoryModel.create(jsonArray, function(err) {});
+                // 不要用这个，因为这个内部实现依然是循环插入，不是真正的批量插入
+                categoryModel.collection.insert(jsonArray, function (err) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    return callback(null);
+                });
+            } else {
+                return callback(null);
+            }
+        });
+    });
+
 };

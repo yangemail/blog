@@ -21,7 +21,7 @@ i18n.configure({
     syncFiles: false,
 
     // where to store json files - defaults to './locales
-    directory: './locales'
+    directory: __dirname + '/locales'
 });
 
 module.exports = i18n;

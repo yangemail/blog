@@ -115,6 +115,7 @@ $(function () {
                 $this.find(".fa").removeClass("fa-cloud-upload").addClass("fa-circle-o-notch fa-spin");
                 var gdata = group.sortable("serialize").get();
                 var json = JSON.stringify(gdata);
+                alert(json);
                 $.ajax({
                     url: "/admin/saveCategories",
                     type: "Post",

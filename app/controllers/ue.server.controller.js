@@ -1,4 +1,5 @@
-const express = require('express');
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 const tool = require('../utility/tool.server.utility');

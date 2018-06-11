@@ -2,8 +2,8 @@ const path = require('path');
 const fs = require('fs');
 const async = require('async');
 const upload = require('jquery-file-upload-middleware');
-const post = require('../proxy/post.server.proxy');
-const category = require('../proxy/category.server.proxy');
+const postProxy = require('../proxy/post.server.proxy');
+const categoryProxy = require('../proxy/category.server.proxy');
 const log = require('../proxy/log.server.proxy');
 const tool = require('../utility/tool.server.utility');
 const moment = require('moment');
@@ -30,7 +30,19 @@ exports.index = function (req, res, next) {
     });
 };
 
-
+// 分类管理页面
+exports.categorymanage = function (req, res, next) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/categorymanage', {
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.classified_management')
+            });
+        }
+    });
+};
 
 // 新的文章页面
 exports.newArticle = function (req, res, next) {
@@ -61,12 +73,117 @@ exports.saveArticle = function (req, res, next) {
         Url: req.body.Url,
         IsDraft: req.body.IsDraft
     };
-    console.log(params);
+
+    postProxy.save(params, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            res.end();
+        }
+    });
+};
+
+/**
+ * 获取文章列表
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getArticles = function (req, res, next) {
+    var filter;
+    var params = {
+        pageIndex: req.body.pageNumber,
+        pageSize: req.body.pageSize,
+        sortName: req.body.sortName,
+        sortOrder: req.body.sortOrder,
+        searchText: req.body.searchText
+    };
+
+    if (req.body.filter) {
+        filter = JSON.parse(req.body.filter);
+        params.cateId = filter.CateName;
+        params.uniqueId = filter.UniqueId;
+        params.title = filter.Title;
+    }
+
+    async.parallel([
+        // 获取文章列表
+        function (cb) {
+            postProxy.getArticles(params, function (err, posts) {
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, posts);
+                }
+            });
+        },
+        // 获取文章总数
+        function (cb) {
+            postProxy.getArticlesCount(params, function (err, count) {
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, count);
+                }
+            });
+        },
+        // 获取分类
+        function (cb) {
+            categoryProxy.getAll(true, false, function (err, categories) {
+                if (err) {
+                    callback(err);
+                } else {
+                    cb(null, categories);
+                }
+            });
+        }
+    ], function (err, results) {
+        var posts;
+        var count;
+        var categories;
+        var post;
+        var cateId;
+        var cateItem;
+        var result = [];
+        if (err) {
+            next(err);
+        } else {
+            posts = results[0];
+            count = results[1];
+            categories = results[2];
+            posts.forEach(function (item) {
+                post = {
+                    UniqueId: item._id,
+                    Alias: item.Alias,
+                    Title: item.Title,
+                    CreatedTime: moment(item.CreatedTime).format('YYYY-MM-DD HH:mm:ss'),
+                    LastModifiedTime: moment(item.LastModifiedTime).format('YYYY-MM-DD HH:mm:ss'),
+                    Summary: item.Summary,
+                    ViewCount: item.ViewCount,
+                    Source: item.Source,
+                    Url: item.Url,
+                    IsDraft: item.IsDraft,
+                    IsActive: item.isActive
+                };
+                cateId = item.CategoryId;
+                cateItem = tool.jsonQuery(categories, {"_id": cateId});
+                if (cateItem) {
+                    post.CategoryAlias = cateItem.Alias;
+                    post.CateName = cateItem.CateName;
+                }
+                result.push(post);
+            });
+            res.json({
+                rows: result,
+                total: count
+            });
+        }
+    });
 };
 
 // 检查文章 Alias 是否唯一
 exports.checkArticleAlias = function (req, res, next) {
-    post.checkAlias(req.body.Alias, req.body.uid, function (err, isValid) {
+    postProxy.checkAlias(req.body.Alias, req.body.uid, function (err, isValid) {
         if (err) {
             next(err);
         } else {
@@ -79,11 +196,57 @@ exports.checkArticleAlias = function (req, res, next) {
 
 // 获取分类数据，不含所有和未分类，不走缓存
 exports.getCategories = function (req, res, next) {
-    category.getAll(false, false, function (err, data) {
+    categoryProxy.getAll(false, false, function (err, data) {
         if (err) {
             next(err);
         } else {
             res.json(data);
+        }
+    });
+};
+
+/**
+ * 保存分类数据
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.saveCategories = function (req, res, next) {
+    var jsonArray = JSON.parse(req.body.json.substr(1, req.body.json.length - 2));
+    categoryProxy.save(jsonArray, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            res.end();
+        }
+    });
+};
+
+/**
+ * 上传图片
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.uploadImg = function (req, res, next) {
+    upload.fileHandler()(req, res, next);
+};
+
+/**
+ * 文章管理页面
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.articleManage = function (req, res, next) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/articlemanage', {
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.article_management')
+            });
         }
     });
 };

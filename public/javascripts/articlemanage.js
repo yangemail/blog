@@ -79,14 +79,14 @@ $(function () {
             },
             filterControl: "input"
         }, {
-            field: "CreateTime",
+            field: "CreatedTime",
             title: "发布时间",
             align: "center",
             valign: "middle",
             width: "180px",
             sortable: true
         }, {
-            field: "ModifyTime",
+            field: "LastModifiedTime",
             title: "修改时间",
             align: "center",
             valign: "middle",

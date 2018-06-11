@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (app) {
     const ue = require('../controllers/ue.server.controller');
 

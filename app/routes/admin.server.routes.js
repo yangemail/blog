@@ -10,10 +10,8 @@ module.exports = function (app) {
     // 网站统计页面 -- INDEX page
     router.get('/', admin.index);
 
-    // TODO: 分类管理页面
-    router.get('/categorymanage', function () {
-        
-    });
+    // 分类管理页面
+    router.get('/categorymanage', admin.categorymanage);
 
     // 获取分类数据，不含所有和未分类，不走缓存
     router.post('/getCategories', admin.getCategories);
@@ -23,21 +21,15 @@ module.exports = function (app) {
         
     });
 
-    // TODO: 保存分类数据
-    router.post('/saveCategories', function () {
-        
-    });
+    // 保存分类数据
+    router.post('/saveCategories', admin.saveCategories);
 
 
-    // TODO: 文章管理页面
-    router.get('/articlemanage', function () {
-        
-    });
+    // 文章管理页面
+    router.get('/articlemanage', admin.articleManage);
 
-    // TODO: 获取文章列表
-    router.post('/getArticles', function () {
-        
-    });
+    // 获取文章列表
+    router.post('/getArticles', admin.getArticles);
 
     // 新的文章页面
     router.get('/newArticle', admin.newArticle);
@@ -109,10 +101,8 @@ module.exports = function (app) {
         
     });
 
-    // TODO: 上传图片
-    router.post('/uploadimg', function () {
-        
-    });
+    // 上传图片
+    router.post('/uploadimg', admin.uploadImg);
 
     // TODO: 根据缓存key获取缓存
     router.post('/getcache', function () {
