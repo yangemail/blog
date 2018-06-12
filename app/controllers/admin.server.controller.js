@@ -18,7 +18,7 @@ upload.configure({
 
 // 网站统计页面
 exports.index = function (req, res, next) {
-    tool.getConfig('./config/props/settings.json', function (err, settings) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
         if (err) {
             next(err);
         } else {
@@ -46,7 +46,7 @@ exports.categorymanage = function (req, res, next) {
 
 // 新的文章页面
 exports.newArticle = function (req, res, next) {
-    tool.getConfig('./config/props/settings.json', function (err, settings) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
         if (err) {
             next(err);
         } else {
@@ -246,6 +246,89 @@ exports.articleManage = function (req, res, next) {
             res.render('admin/articlemanage', {
                 config: settings,
                 title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.article_management')
+            });
+        }
+    });
+};
+
+/**
+ * 评论管理页面
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.comments = function (req, res, next) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/comments', {
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.comment_management')
+            });
+        }
+    });
+};
+
+/**
+ * 留言管理页面
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.guestbook = function (req, res, next) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/guestbook', {
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.msg_management')
+            });
+        }
+    });
+};
+
+/**
+ * 关于管理页面
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.aboutmanage = function (req, res, next) {
+    async.parallel([
+        // 获取关于数据
+        function (cb) {
+            tool.getConfig(path.join(__dirname, '../../config/props/about.json'), function (err, about) {
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, about);
+                }
+            });
+        },
+        // 获取配置
+        function (cb) {
+            tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, settings);
+                }
+            });
+        }
+    ], function (err, results) {
+        var settings;
+        var about;
+        if (err) {
+            next(err);
+        } else {
+            about = results[0];
+            settings = results[1];
+            res.render('admin/aboutmanage', {
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.about_management'),
+                about: about,
+                config: settings
             });
         }
     });

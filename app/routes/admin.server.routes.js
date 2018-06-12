@@ -56,20 +56,14 @@ module.exports = function (app) {
     });
 
 
-    // TODO: 评论管理页面
-    router.get('/comments', function () {
-        
-    });
+    // 评论管理页面
+    router.get('/comments', admin.comments);
 
-    // TODO: 留言管理页面
-    router.get('/guestbook', function () {
-        
-    });
+    // 留言管理页面
+    router.get('/guestbook', admin.guestbook);
 
-    // TODO: 关于管理页面
-    router.get('/aboutmanage', function () {
-        
-    });
+    // 关于管理页面
+    router.get('/aboutmanage', admin.aboutmanage);
 
     // TODO: 缓存管理页面
     router.get('/cachemanage', function () {

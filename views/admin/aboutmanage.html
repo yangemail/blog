@@ -1,0 +1,49 @@
+{% extends './../shared/layoutAdmin.html' %}
+
+{% block header %}
+<title>{{ title }}</title>
+<link href="/libs/sweetalert/dist/sweetalert.css" rel="stylesheet"/>
+<link href="/libs/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block main %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8">
+        <h2>{{ __('admin.aboutmanage.about') }}</h2>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-4 col-lg-offset-4">
+                            <div class="about-block">
+                                <form id="formAbout" action="/admin/saveAbout" method="Post">
+                                    <div class="widget-head-color-box navy-bg p-lg text-center">
+                                        <div class="m-b-md">
+                                            <input id="FirstLine" type="text" name="FirstLine"
+                                                   placeholder="{{ __('admin.aboutmanage.line_1') }}"
+                                                   value="{{ about.FirstLine }}"
+                                                   class="form-group form-control text-center"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="/javascripts/admin.js" charset="utf-8"/>
+<script type="text/javascript" src="/libs/blueimp-file-upload/js/vendor/jquery.ui.widget.js" charset="utf-8"></script>
+<script type="text/javascript" src="/libs/blueimp-file-upload/js/jquery.fileupload.js" charset="utf-8"></script>
+<script type="text/javascript" src="/libs/sweetalert/dist/sweetalert.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/javascripts/aboutmanage.js" charset="utf-8"></script>
+{% endblock %}
