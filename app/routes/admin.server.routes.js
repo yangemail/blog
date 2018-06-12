@@ -65,10 +65,8 @@ module.exports = function (app) {
     // 关于管理页面
     router.get('/aboutmanage', admin.aboutmanage);
 
-    // TODO: 缓存管理页面
-    router.get('/cachemanage', function () {
-
-    });
+    // 缓存管理页面
+    router.get('/cachemanage', admin.cachemanage);
 
     // TODO: 异常管理页面
     router.get('/exception', function () {
@@ -90,18 +88,15 @@ module.exports = function (app) {
 
     });
 
-    // TODO: 保存关于数据
-    router.post('/saveAbout', function () {
-        
-    });
+    // 保存关于数据
+    router.post('/saveAbout', admin.saveAbout);
 
     // 上传图片
     router.post('/uploadimg', admin.uploadImg);
 
-    // TODO: 根据缓存key获取缓存
-    router.post('/getcache', function () {
-        
-    });
+    // 根据缓存key获取缓存
+    router.post('/getcache', admin.getcache);
 
-
+    // 清除指定key的缓存
+    router.post('/clearcache', admin.clearcache);
 };

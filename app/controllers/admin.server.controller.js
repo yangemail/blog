@@ -333,3 +333,72 @@ exports.aboutmanage = function (req, res, next) {
         }
     });
 };
+
+/**
+ * 保存关于数据
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.saveAbout = function (req, res, next) {
+    tool.setConfig(path.join(__dirname, '../../config/props/about.json'), {
+        FirstLine: req.body.FirstLine,
+        SecondLine: req.body.SecondLine,
+        PhotoPath: req.body.PhotoPath,
+        ThirdLine: req.body.ThirdLine,
+        Profile: req.body.Profile,
+        Wechat: req.body.Wechat,
+        QrcodePath: req.body.QrcodePath,
+        Email: req.body.Email
+    });
+    res.end();
+};
+
+/**
+ * 缓存管理页面
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.cachemanage = function (req, res, next) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/cachemanage', {
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.cache_management')
+            });
+        }
+    });
+};
+
+/**
+ * 根据缓存key获取缓存
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getcache = function (req, res, next) {
+    redisClient.getItem(req.body.key, function (err, data) {
+        if (err) {
+            next(err);
+        } else {
+            if (data) {
+                res.json(data);
+            } else {
+                res.end();
+            }
+        }
+    });
+};
+
+exports.clearcache = function (req, res, next) {
+    redisClient.removeItem(req.body.key, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            res.end();
+        }
+    });
+};

@@ -46,6 +46,7 @@ module.exports = function () {
 
     // uncomment after placing your favicon in /public
     app.use(favicon(path.join('./public', 'favicon.ico')));
+
     if (process.env.NODE_ENV === 'development') {
         app.use(morgan('dev'));
         // 在开发过程中，需要取消模板缓存
@@ -53,6 +54,7 @@ module.exports = function () {
     } else if (process.env.NODE_ENV === 'production') {
         app.use(compress());
     }
+
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
         extended: false
