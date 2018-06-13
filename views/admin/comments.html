@@ -1,10 +1,10 @@
 {% extends './../shared/layoutAdmin.html' %}
 
-{% block header %}
-<title>{{ title }}></title>
+{% block title %}
+{{ title }}>
 {% endblock %}
 
-{% block main %}
+{% block content %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
         <h2>{{ __('admin.comments.comments') }}</h2>
@@ -25,6 +25,6 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
+{% block footer %}
 <script type="text/javascript" src="/javascripts/admin.js" charset="utf-8"/>
 {% endblock %}

@@ -402,3 +402,16 @@ exports.clearcache = function (req, res, next) {
         }
     });
 };
+
+exports.exception = function (req, res, next) {
+    tool.getConfig(path.join(__dirname, '../config/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/exception', {
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.exception_management')
+            });
+        }
+    });
+};

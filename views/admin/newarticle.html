@@ -1,12 +1,15 @@
 {% extends './../shared/layoutAdmin.html' %}
 
-{% block header %}
-<title>{{ title }}</title>
+{%block title%}
+{{ title }}
+{%endblock%}
+
+{% block head %}
 <link href="/libs/sweetalert/dist/sweetalert.css" rel="stylesheet"/>
 <link href="/libs/form.validation/dist/css/formValidation.min.css" rel="stylesheet"/>
 {% endblock %}
 
-{% block main %}
+{% block content %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
         <h2>{{__("admin.newarticle.new")}}</h2>
@@ -123,7 +126,7 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
+{% block footer %}
 <script type="text/javascript" src="/libs/form.validation/dist/js/formValidation.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/libs/form.validation/dist/js/framework/bootstrap.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/libs/form.validation/dist/js/language/zh_CN.js" charset="utf-8"></script>

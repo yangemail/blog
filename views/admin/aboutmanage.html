@@ -1,13 +1,16 @@
 {% extends './../shared/layoutAdmin.html' %}
 
-{% block header %}
-<title>{{ title }}</title>
+{%block title%}
+{{title}}
+{%endblock%}
+
+{% block head %}
 <link href="/libs/sweetalert/dist/sweetalert.css" rel="stylesheet"/>
 <link href="/libs/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
 <script type="text/javascript" src="/javascripts/aboutmanage.js" charset="utf-8"></script>
 {% endblock %}
 
-{% block main %}
+{% block content %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
         <h2>{{ __('admin.aboutmanage.about') }}</h2>
@@ -98,10 +101,8 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
+{% block footer %}
 <script type="text/javascript" src="/libs/blueimp-file-upload/js/vendor/jquery.ui.widget.js" charset="utf-8"></script>
 <script type="text/javascript" src="/libs/blueimp-file-upload/js/jquery.fileupload.js" charset="utf-8"></script>
 <script type="text/javascript" src="/libs/sweetalert/dist/sweetalert.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="/javascripts/admin.js" charset="utf-8"/>
-
 {% endblock %}
