@@ -469,3 +469,54 @@ exports.getExceptions = function (req, res, next) {
         }
     });
 };
+
+/**
+ * 系统设置页面
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.settings = function (req, res, next) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+        if (err) {
+            next(err);
+        } else {
+            res.render('admin/settings', {
+                config: settings,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.settings')
+            });
+        }
+    });
+};
+
+/**
+ * 保存系统设置
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.saveSettings = function (req, res, next) {
+    tools.setConfig(path.join(__dirname, '../../config/props/settings.json'), {
+        SiteName: req.body.SiteName,
+        SiteDomain: req.body.SiteDomain,
+        RecordNo: req.body.RecordNo,
+        LogoPath: req.body.LogoPath,
+        PageSize: req.body.PageSize,
+
+        ExpandMenu: req.body.ExpandMenu,
+        CacheExpired: req.body.CacheExpired,
+        TranslateKey: req.body.TranslateKey,
+        EnableStatistics: req.body.EnableStatistics,
+        StatisticsId: req.body.StatisticsId,
+
+        EnableShare: req.body.EnableShare,
+        JiaThisId: req.body.JiaThisId,
+        ShowComments: req.body.ShowComments,
+        ShowGuestbook: req.body.ShowGuestbook,
+        ChangyanId: req.body.ChangyanId,
+
+        ChangyanConf: req.body.ChangyanConf
+    });
+    res.end();
+};
+

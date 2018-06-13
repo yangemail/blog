@@ -17,8 +17,10 @@ module.exports = function () {
     });
 
     // Models
+    require('../app/models/db.server.model');
     require('../app/models/post.server.model');
     require('../app/models/category.server.model');
+    require('../app/models/log.server.model');
 
     console.log('Mongodb running at ' + config.db);
 

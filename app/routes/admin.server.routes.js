@@ -74,15 +74,11 @@ module.exports = function (app) {
     // 获取异常数据
     router.post('/getExceptions', admin.getExceptions);
 
-    // TODO: 系统设置页面
-    router.get('/settings', function () {
+    // 系统设置页面
+    router.get('/settings', admin.settings);
 
-    });
-
-    // TODO: 保存系统设置
-    router.post('/saveSettings', function () {
-
-    });
+    // 保存系统设置
+    router.post('/saveSettings', admin.saveSettings);
 
     // 保存关于数据
     router.post('/saveAbout', admin.saveAbout);
