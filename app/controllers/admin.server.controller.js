@@ -404,13 +404,67 @@ exports.clearcache = function (req, res, next) {
 };
 
 exports.exception = function (req, res, next) {
-    tool.getConfig(path.join(__dirname, '../config/settings.json'), function (err, settings) {
+    tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
         if (err) {
             next(err);
         } else {
             res.render('admin/exception', {
                 config: settings,
                 title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.exception_management')
+            });
+        }
+    });
+};
+
+exports.getExceptions = function (req, res, next) {
+    var params = {
+        pageIndex: req.body.pageNumber,
+        pageSize: req.body.pageSize,
+        sortName: req.body.sortName,
+        sortOrder: req.body.sortOrder
+    };
+
+    async.parallel([
+        // 获取异常列表
+        function (cb) {
+            log.getAll(params, function (err, logs) {
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, logs);
+                }
+            });
+        },
+        // 获取异常总数
+        function (cb) {
+            log.getAllCount(params, function (err, count) {
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, count);
+                }
+            });
+        }
+    ], function (err, results) {
+        let logs
+            , count
+            , result = [];
+        if (err) {
+            next(err);
+        } else {
+            logs = results[0];
+            count = results[1];
+            logs.forEach(function (item) {
+                result.push({
+                    message: item.message,
+                    time: moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS'),
+                    level: item.level,
+                    meta: item.meta
+                });
+            });
+            res.json({
+                rows: result,
+                total: count
             });
         }
     });

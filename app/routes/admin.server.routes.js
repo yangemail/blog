@@ -68,15 +68,11 @@ module.exports = function (app) {
     // 缓存管理页面
     router.get('/cachemanage', admin.cachemanage);
 
-    // TODO: 异常管理页面
-    router.get('/exception', function () {
+    // 异常管理页面
+    router.get('/exception', admin.exception);
 
-    });
-
-    // TODO: 获取异常数据
-    router.post('/getExceptions', function () {
-
-    });
+    // 获取异常数据
+    router.post('/getExceptions', admin.getExceptions);
 
     // TODO: 系统设置页面
     router.get('/settings', function () {
