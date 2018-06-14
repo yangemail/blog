@@ -4,6 +4,7 @@ const winston = require('winston');
 const dbPath = require('../../config/config').db;
 const os = require('os');
 require('winston-mongodb').MongoDB;
+
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)({

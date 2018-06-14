@@ -5,7 +5,7 @@ module.exports = function (app) {
     const admin = require('../controllers/admin.server.controller');
 
     // 需要增加 Passport 验证
-    app.use('/admin', router);
+    app.use('/admin', require('connect-ensure-login').ensureLoggedIn('/login'), router);
 
     // 网站统计页面 -- INDEX page
     router.get('/', admin.index);
@@ -18,7 +18,7 @@ module.exports = function (app) {
 
     // TODO: 获取分类数据，包含所有和未分类，不走缓存
     router.post('/getCateFilter', function () {
-        
+
     });
 
     // 保存分类数据
@@ -39,20 +39,20 @@ module.exports = function (app) {
 
     // 保存文章
     router.post('/saveArticle', admin.saveArticle);
-    
+
     // TODO: 修改文章
     router.get('/editArticle/:id', function () {
-        
+
     });
 
     // TODO: 删除文章
     router.post('/deleteArticles', function () {
-        
+
     });
 
     // TODO: 还原文章
     router.post('/undoArticle', function () {
-        
+
     });
 
 
@@ -69,7 +69,7 @@ module.exports = function (app) {
     router.get('/cachemanage', admin.cachemanage);
 
     // 异常管理页面
-    router.get('/exception', admin.exception);
+    router.get('/exception', require('connect-ensure-login').ensureLoggedIn(), admin.exception);
 
     // 获取异常数据
     router.post('/getExceptions', admin.getExceptions);

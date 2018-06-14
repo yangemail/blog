@@ -23,7 +23,6 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
 
-// const consolidate = require('consolidate');
 // 加载 swig-templates 模块
 const swig = require('swig-templates');
 
@@ -79,8 +78,8 @@ module.exports = function () {
 
 
     app.use(flash());
-    // app.use(passport.initialize());
-    // app.use(passport.session());
+    app.use(passport.initialize());
+    app.use(passport.session());
 
 
     // **** Routes ****
@@ -91,7 +90,7 @@ module.exports = function () {
     /* Misc */
     // app.use('/', misc);
     /* Auth */
-    // app.use('/', auth);
+    require('../app/routes/auth.server.routes')(app);
     /* Blog */
     // app.use('/blog', blog);
     /* Admin */
