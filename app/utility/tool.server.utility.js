@@ -70,3 +70,25 @@ exports.jsonQuery = function (jsonArray, conditions) {
     }
 };
 
+exports.generateKey = function (prefix, obj) {
+    if (typeof prefix === 'object') {
+        obj = prefix;
+        prefix = undefined;
+    }
+    let attr
+        , value
+        , key = '';
+    for (attr in obj) {
+        value = obj[attr];
+        // 形如：_name_Tom
+        key += '_' + attr.toString().toLowerCase() + '_' + value.toString();
+    }
+    if (prefix) {
+        // 形如：prefix_name_Tom_age_20
+        key = prefix + key;
+    } else {
+        // 形如：name_Tom_age_20
+        key = key.substr(1);
+    }
+    return key;
+};

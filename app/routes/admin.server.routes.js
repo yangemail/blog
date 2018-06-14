@@ -16,10 +16,8 @@ module.exports = function (app) {
     // 获取分类数据，不含所有和未分类，不走缓存
     router.post('/getCategories', admin.getCategories);
 
-    // TODO: 获取分类数据，包含所有和未分类，不走缓存
-    router.post('/getCateFilter', function () {
-
-    });
+    // 获取分类数据，包含所有和未分类，不走缓存
+    router.post('/getCateFilter', admin.getCateFilter);
 
     // 保存分类数据
     router.post('/saveCategories', admin.saveCategories);
@@ -40,20 +38,14 @@ module.exports = function (app) {
     // 保存文章
     router.post('/saveArticle', admin.saveArticle);
 
-    // TODO: 修改文章
-    router.get('/editArticle/:id', function () {
+    // 修改文章
+    router.get('/editArticle/:id', admin.editArticle);
 
-    });
+    // 删除文章
+    router.post('/deleteArticles', admin.deleteArticles);
 
-    // TODO: 删除文章
-    router.post('/deleteArticles', function () {
-
-    });
-
-    // TODO: 还原文章
-    router.post('/undoArticle', function () {
-
-    });
+    // 还原文章
+    router.post('/undoArticle', admin.undoArticle);
 
 
     // 评论管理页面

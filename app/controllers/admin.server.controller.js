@@ -520,3 +520,103 @@ exports.saveSettings = function (req, res, next) {
     res.end();
 };
 
+/**
+ * 获取分类数据，包含所有和未分类，不走缓存
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getCateFilter = function (req, res, next) {
+    categoryProxy.getAll(true, false, function (err, data) {
+        if (err) {
+            next(err);
+        } else {
+            res.json(data);
+        }
+    });
+};
+
+/**
+ * 修改文章
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.editArticle = function (req, res, next) {
+    let id = req.params.id;
+
+    if (!id) {
+        res.redirect('/admin/articlemanage');
+    }
+
+    async.parallel([
+        // 获取分类
+        function (cb) {
+            tool.getConfig(path.join(__dirname, '../../config/props/settings.json'), function (err, settings) {
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, settings);
+                }
+            });
+        },
+        // 根据文章Id获取文章
+        function (cb) {
+            postProxy.getById(id, function (err, article) {
+                if (err) {
+                    cb(err);
+                } else if (!article) {
+                    next();
+                } else {
+                    cb(null, article);
+                }
+            });
+        }
+    ], function (err, results) {
+        let settings
+            , article;
+        if (err) {
+            next(err);
+        } else {
+            settings = results[0];
+            article = result[1];
+            res.render('admin/editarticle', {
+                config: settings,
+                post: article,
+                title: settings['SiteName'] + ' - ' + res.__('layoutAdmin.edit_article')
+            });
+        }
+    });
+};
+
+/**
+ * 删除文章
+ * @param req
+ * @param res
+ * @param err
+ */
+exports.deleteArticles = function (req, res, next) {
+    postProxy.delete(req.body.ids, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            res.end();
+        }
+    });
+};
+
+/**
+ * 还原文章
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.undoArticle = function (req, res, next) {
+    postProxy.undo(req.body.id, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            res.end();
+        }
+    });
+};
