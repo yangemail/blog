@@ -384,7 +384,7 @@ exports.getPostByAlias = function (alias, callback) {
             return callback(null, article);
         }
 
-        postModel.findOne({"Alias", alias}, function (err, article) {
+        postModel.findOne({"Alias": alias}, function (err, article) {
             if (err) {
                 return callback(err);
             }
