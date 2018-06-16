@@ -50,6 +50,7 @@ module.exports = function () {
         app.use(morgan('dev'));
         // 在开发过程中，需要取消模板缓存
         swig.setDefaults({cache: false});
+        swig.invalidateCache();
     } else if (process.env.NODE_ENV === 'production') {
         app.use(compress());
     }
